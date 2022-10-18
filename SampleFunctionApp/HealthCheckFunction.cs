@@ -12,34 +12,34 @@ namespace SampleFunctionApp
 {
     public class HealthCheckFunction
     {
-        private readonly IApiAuthorization _apiAuthorization;
+        //private readonly IApiAuthorization _apiAuthorization;
 
-        public HealthCheckFunction(IApiAuthorization apiAuthorization)
-        {
-            _apiAuthorization = apiAuthorization;
-        }
+        //public HealthCheckFunction(IApiAuthorization apiAuthorization)
+        //{
+        //    _apiAuthorization = apiAuthorization;
+        //}
 
-        [FunctionName("HealthCheckFunction")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogWarning($"HTTP trigger function {nameof(HealthCheckFunction)} received a request.");
+        //[FunctionName("HealthCheckFunction")]
+        //public async Task<IActionResult> Run(
+        //    [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+        //    ILogger log)
+        //{
+        //    log.LogWarning($"HTTP trigger function {nameof(HealthCheckFunction)} received a request.");
 
-            HealthCheckResult result = await _apiAuthorization.HealthCheckAsync();
+        //    HealthCheckResult result = await _apiAuthorization.HealthCheckAsync();
 
-            if (result.IsHealthy)
-            {
-                log.LogWarning($"{nameof(HealthCheckFunction)} health check OK.");
-            }
-            else
-            {
-                log.LogError(
-                    $"{nameof(HealthCheckFunction)} health check failed."
-                      + $" {nameof(HealthCheckResult)}: {JsonConvert.SerializeObject(result)}"
-                    );
-            }
-            return new OkObjectResult(result);
-        }
+        //    if (result.IsHealthy)
+        //    {
+        //        log.LogWarning($"{nameof(HealthCheckFunction)} health check OK.");
+        //    }
+        //    else
+        //    {
+        //        log.LogError(
+        //            $"{nameof(HealthCheckFunction)} health check failed."
+        //              + $" {nameof(HealthCheckResult)}: {JsonConvert.SerializeObject(result)}"
+        //            );
+        //    }
+        //    return new OkObjectResult(result);
+        //}
     }
 }

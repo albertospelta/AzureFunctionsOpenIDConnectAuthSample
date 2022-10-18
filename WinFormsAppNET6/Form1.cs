@@ -12,6 +12,12 @@
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            /*
+             * Authenticate user and calls the SampleFunctionApp.HelloFunction AZ function
+             * 
+             */
+
+
             var clientOptions = new Auth0ClientOptions
             {
                 Domain = "dev-ni8yqtqf.eu.auth0.com",
@@ -48,6 +54,9 @@
                 {
                     Debug.WriteLine($"{claim.Type} = {claim.Value}");
                 }
+
+                var apiClient = new RuntimeApiClient(loginResult.AccessToken);
+                await apiClient.HelloFunctionAsync();
 
                 await client.LogoutAsync();
             }

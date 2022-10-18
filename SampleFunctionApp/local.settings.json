@@ -21,7 +21,7 @@
     // the API (HTTP triggered Azure Function) being protected. This is often a URL but
     // For Auth0 the Audience setting set here should match the API's Identifier
     // in the Auth0 Dashboard.
-    "OidcApiAuthorizationSettings:Audience": "https://runtime/api",
+    "OidcApiAuthorizationSettings:Audience": "https://runtime/webapi",
 
     // OidcApiAuthorizationSettings:IssuerUrl setting.
     // The URL of the Open ID Connect provider (issuer) that will perform API authorization.

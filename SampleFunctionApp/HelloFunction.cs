@@ -1,13 +1,10 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OidcApiAuthorization.Abstractions;
-using OidcApiAuthorization.Models;
 
 namespace SampleFunctionApp
 {
@@ -21,28 +18,26 @@ namespace SampleFunctionApp
         }
 
         [FunctionName(nameof(HelloFunction))]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = null)] HttpRequest req,
-            ILogger log)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = null)] HttpRequest req, ILogger log)
         {
             log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} received a request.");
 
-            ApiAuthorizationResult authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers);
+            /*
+             * _apiAuthorization.AuthorizeAsync returns an auth error:
+             * 
+             *      Authorization Failed. Microsoft.IdentityModel.Tokens.SecurityTokenDecryptionFailedException caught while validating JWT token.Message: 
+             *      IDX10609: Decryption failed. No Keys tried: token: 'eyJhbGciOiJkaXIiLCJlbmM...mwL_4OA'.
+             */
+
+            var authorizationResult = await _apiAuthorization.AuthorizeAsync(req.Headers);
             if (authorizationResult.Failed)
             {
                 log.LogWarning(authorizationResult.FailureReason);
                 return new UnauthorizedResult();
             }
+
             log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} request is authorized.");
-
-            // Get name from request body.
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            string name = data?.name;
-
-            return !string.IsNullOrWhiteSpace(name)
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name the request body.");
+            return new OkResult();
         }
     }
 }
