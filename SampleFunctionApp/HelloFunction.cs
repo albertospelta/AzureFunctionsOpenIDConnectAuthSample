@@ -22,7 +22,7 @@ namespace SampleFunctionApp
 
         [FunctionName(nameof(HelloFunction))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogWarning($"HTTP trigger function {nameof(HelloFunction)} received a request.");
